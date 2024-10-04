@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: civilisation-compass
+    env: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./build
+    envVars:
+      - key: NODE_VERSION
+        value: 18.3.0  # Specify the Node.js version you're using
+      - key: REACT_APP_RENDER_GIT_COMMIT
+        value: $RENDER_GIT_COMMIT
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: no-cache

@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-deep-gray text-white font-serif;
+}
+
+.rotation-icon {
+  stroke: white;
+  stroke-width: 2;
+}
+
+.rotation-icon line {
+  stroke: white;
+  stroke-width: 2;
+}
+
+.rotation-icon circle {
+  stroke: white;
+  stroke-width: 2;
+  fill: none;
+}
