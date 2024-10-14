@@ -9,29 +9,58 @@ import RotationControl from '../components/RotationControl';
 import FullscreenToggle from '../components/FullscreenToggle';
 import RealMachinesLogo from '../components/RealMachines';
 import DetailedMetrics from '../components/DetailedMetrics';
-import { parseCSV, NodeData } from '../utils/csvParser';
+import { parseCSV, DataPoint } from '../utils/csvParser';
+import SinglePlaneVis from '../components/SinglePlaneVis';
+import FlexibleVis from '../components/FlexibleVis';
 
 enum VisualizationType {
   Main3D,
   XY2D,
   XZ2D,
-  YZ2D
+  YZ2D,
+  XW2D,
+  Custom2D
 }
 
-const App: React.FC = () => {
+const CivilisationCompass: React.FC = () => {
   const [rotationSpeed, setRotationSpeed] = useState(0.001);
   const [showNodes, setShowNodes] = useState(true);
   const [colorScheme, setColorScheme] = useState('default');
   const [backgroundColor, setBackgroundColor] = useState('#1a1a1a');
   const [showGridLines, setShowGridLines] = useState(true);
   const [showEdges, setShowEdges] = useState(true);
-  const [isFullscreen, setIsFullscreen] = useState(false);
   const [isControlPanelOpen, setIsControlPanelOpen] = useState(false);
   const [nodes, setNodes] = useState<NodeData[]>([]);
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
   const [interactionRadius, setInteractionRadius] = useState(0.5);
   const [activeVisualization, setActiveVisualization] = useState<VisualizationType>(VisualizationType.Main3D);
+  const [hoveredVisualization, setHoveredVisualization] = useState<VisualizationType>(VisualizationType.Main3D);
+  const [data, setData] = useState<DataPoint[]>([]);
+  const [csvFile, setCsvFile] = useState<string>('/civcountries.csv');
+
+  useEffect(() => {
+    fetch(csvFile)
+      .then(response => response.text())
+      .then(csv => {
+        const parsedData = parseCSV(csv);
+        setData(parsedData);
+      })
+      .catch(error => console.error('Error fetching CSV:', error));
+  }, [csvFile]);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const content = e.target?.result as string;
+        const parsedData = parseCSV(content);
+        setData(parsedData);
+      };
+      reader.readAsText(file);
+    }
+  };
 
   const handleRotationSpeedChange = useCallback((speed: number) => {
     setRotationSpeed(speed);
@@ -49,11 +78,11 @@ const App: React.FC = () => {
     setSelectedNode(null);
   }, []);
 
-  const toggleFullscreen = () => {
-    setIsFullscreen(!isFullscreen);
+  const handleVisualizationHover = (type: VisualizationType) => {
+    setHoveredVisualization(type);
   };
 
-  const handleVisualizationChange = (type: VisualizationType) => {
+  const handleVisualizationClick = (type: VisualizationType) => {
     setActiveVisualization(type);
   };
 
@@ -87,11 +116,56 @@ const App: React.FC = () => {
           </Canvas>
         );
       case VisualizationType.XY2D:
-        return <ScatterPlot2D data={nodes} xKey="x" yKey="y" xLabel="Individualist" yLabel="Elitist" />;
+        return (
+          <Canvas camera={{ position: [0, 0, 5] }}>
+            <ambientLight intensity={0.5} />
+            <SinglePlaneVis
+              rotationSpeed={rotationSpeed}
+              colorScheme={colorScheme}
+              showGridLines={showGridLines}
+              nodes={nodes.map(node => ({ name: node.name, x: node.x, y: node.y }))}
+              onNodeHover={handleNodeHover}
+              onNodeClick={handleNodeClick}
+              interactionRadius={interactionRadius}
+              xAxisLabel="Individualist"
+              yAxisLabel="Elitist"
+            />
+          </Canvas>
+        );
       case VisualizationType.XZ2D:
-        return <ScatterPlot2D data={nodes} xKey="x" yKey="z" xLabel="Individualist" yLabel="Abundance" />;
+        return (
+          <Canvas camera={{ position: [0, 0, 5] }}>
+            <ambientLight intensity={0.5} />
+            <SinglePlaneVis
+              rotationSpeed={rotationSpeed}
+              colorScheme={colorScheme}
+              showGridLines={showGridLines}
+              nodes={nodes.map(node => ({ name: node.name, x: node.x, y: node.z }))}
+              onNodeHover={handleNodeHover}
+              onNodeClick={handleNodeClick}
+              interactionRadius={interactionRadius}
+              xAxisLabel="Individualist"
+              yAxisLabel="Abundance"
+            />
+          </Canvas>
+        );
       case VisualizationType.YZ2D:
-        return <ScatterPlot2D data={nodes} xKey="y" yKey="z" xLabel="Elitist" yLabel="Abundance" />;
+        return (
+          <Canvas camera={{ position: [0, 0, 5] }}>
+            <ambientLight intensity={0.5} />
+            <SinglePlaneVis
+              rotationSpeed={rotationSpeed}
+              colorScheme={colorScheme}
+              showGridLines={showGridLines}
+              nodes={nodes.map(node => ({ name: node.name, x: node.y, y: node.z }))}
+              onNodeHover={handleNodeHover}
+              onNodeClick={handleNodeClick}
+              interactionRadius={interactionRadius}
+              xAxisLabel="Elitist"
+              yAxisLabel="Abundance"
+            />
+          </Canvas>
+        );
     }
   };
 
@@ -101,7 +175,11 @@ const App: React.FC = () => {
         <h1 className="text-4xl md:text-6xl font-bold mb-2">Civilisation Compass</h1>
         <p className="text-xl md:text-2xl">Quantifying Society's Progress</p>
       </div>
-      {renderVisualization()}
+      {/* {renderVisualization(hoveredVisualization || activeVisualization)} */}
+      <div className="w-full h-full" style={{ backgroundColor: activeVisualization === VisualizationType.Main3D ? '#1a1a1a' : 'transparent' }}>
+        {/* {renderVisualization(hoveredVisualization || activeVisualization)} */}
+        {renderVisualization()}
+      </div>
       <RotationControl
         rotationSpeed={rotationSpeed}
         setRotationSpeed={handleRotationSpeedChange}
@@ -119,12 +197,11 @@ const App: React.FC = () => {
         setShowEdges={setShowEdges}
         isOpen={isControlPanelOpen}
         setIsOpen={setIsControlPanelOpen}
-        // interactionRadius={interactionRadius}
-        // setInteractionRadius={setInteractionRadius}
       />
       <ComparativeGraphs 
-        // onVisualizationChange={handleVisualizationChange}
-        // activeVisualization={activeVisualization}
+        onGraphHover={handleVisualizationHover}
+        onGraphClick={handleVisualizationClick}
+        activeVisualization={activeVisualization}
       />
       <RealMachinesLogo isControlPanelOpen={isControlPanelOpen} />
       <DetailedMetrics
@@ -133,9 +210,8 @@ const App: React.FC = () => {
         nodeData={nodes.reduce((acc, node) => ({ ...acc, [node.name]: node }), {})}
         onClose={handleCloseDetailedMetrics}
       />
-      {/* <FullscreenToggle isFullscreen={isFullscreen} toggleFullscreen={toggleFullscreen} /> */}
     </div>
   );
 };
 
-export default App;
+export default CivilisationCompass;

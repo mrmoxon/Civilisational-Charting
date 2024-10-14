@@ -1,37 +1,26 @@
-// utils/csvParser.ts
-
-export interface NodeData {
-  name: string;
-  x: number;
-  y: number;
-  z: number;
+export interface DataPoint {
   [key: string]: string | number;
 }
 
-export const parseCSV = (csv: string): NodeData[] => {
-  const lines = csv.split('\n');
-  const headers = lines[0].split(',');
+export const parseCSV = (csv: string): DataPoint[] => {
+  const lines = csv.split('\n').filter(line => line.trim() !== '');
+  const headers = lines[0].split(',').map(header => header.trim());
 
   return lines.slice(1).map(line => {
-    const values = line.split(',');
-    const node: NodeData = {
-      name: '',
-      x: 0,
-      y: 0,
-      z: 0
-    };
+    const values = line.split(',').map(value => value.trim());
+    const dataPoint: DataPoint = {};
 
     headers.forEach((header, index) => {
-      const value = values[index].trim();
-      if (header === 'name') {
-        node.name = value;
-      } else if (['x', 'y', 'z'].includes(header)) {
-        node[header] = parseFloat(value);
-      } else {
-        node[header] = isNaN(parseFloat(value)) ? value : parseFloat(value);
-      }
+      const value = values[index];
+      dataPoint[header] = isNaN(Number(value)) ? value : Number(value);
     });
 
-    return node;
+    return dataPoint;
   });
+};
+
+export const getNumericColumns = (data: DataPoint[]): string[] => {
+  if (data.length === 0) return [];
+  const firstDataPoint = data[0];
+  return Object.keys(firstDataPoint).filter(key => typeof firstDataPoint[key] === 'number');
 };
