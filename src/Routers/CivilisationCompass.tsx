@@ -1,17 +1,17 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
-import MetricVisualisation from '../components/MetricVisualisation';
-import ComparativeGraphs from '../components/ComparativeGraphs';
-import ScatterPlot2D from '../components/ScatterPlot2D';
-import ScatterPlot3D from '../components/ScatterPlot3D';
-import ControlPanel from '../components/ControlPanel';
-import RotationControl from '../components/RotationControl';
-import FullscreenToggle from '../components/FullscreenToggle';
-import RealMachinesLogo from '../components/RealMachines';
-import DetailedMetrics from '../components/DetailedMetrics';
+import MetricVisualisation from '../CivCompass/MetricVisualisation';
+import ComparativeGraphs from '../CivCompass/ComparativeGraphs';
+import ScatterPlot2D from '../CivCompass/ScatterPlot2D';
+import ScatterPlot3D from '../CivCompass/ScatterPlot3D';
+import ControlPanel from '../CivCompass/ControlPanel';
+import RotationControl from '../CivCompass/RotationControl';
+import FullscreenToggle from '../CivCompass/FullscreenToggle';
+import RealMachinesLogo from '../CivCompass/RealMachines';
+import DetailedMetrics from '../CivCompass/DetailedMetrics';
 import { parseCSV, DataPoint } from '../utils/csvParser';
-import SinglePlaneVis from '../components/SinglePlaneVis';
-import FlexibleVis from '../components/FlexibleVis';
+import SinglePlaneVis from '../CivCompass/SinglePlaneVis';
+import FlexibleVis from '../CivCompass/FlexibleVis';
 
 enum VisualizationType {
   Main3D,

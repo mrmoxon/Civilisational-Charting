@@ -1,23 +1,16 @@
 import React from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Home from './Routers/Home';
 import CivilisationCompass from './Routers/CivilisationCompass';
+import ElectoralAnalysis from './Routers/ElectoralAnalysis';
 
 const App: React.FC = () => {
   return (
-    <div>
-      <nav>
-        <ul>
-          <li><Link to="/"></Link></li>
-          <li><Link to="/civilisation"></Link></li>
-        </ul>
-      </nav>
-
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/civilisation" element={<CivilisationCompass />} />
-      </Routes>
-    </div>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/civilisation" element={<CivilisationCompass />} />
+      <Route path="/electoral-analysis" element={<ElectoralAnalysis />} />
+    </Routes>
   );
 };
 

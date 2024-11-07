@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 
+export type ColorSchemeType = 'default' | 'pastel' | 'monochrome';
+
 interface ControlPanelProps {
   showNodes: boolean;
   setShowNodes: (show: boolean) => void;
-  colorScheme: string;
-  setColorScheme: (scheme: string) => void;
+  colorScheme: ColorSchemeType;
+  setColorScheme: (scheme: ColorSchemeType) => void;
   backgroundColor: string;
   setBackgroundColor: (color: string) => void;
   showGridLines: boolean;
@@ -29,7 +31,6 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
   isOpen,
   setIsOpen,
 }) => {
-//   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className={`absolute top-60 right-0 transition-all duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
@@ -47,7 +48,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
             </label>
             <select
               value={colorScheme}
-              onChange={(e) => setColorScheme(e.target.value)}
+              onChange={(e) => setColorScheme(e.target.value as ColorSchemeType)}
               className="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-gray-700 border-gray-600 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
             >
               <option value="default">Classic</option>
@@ -77,7 +78,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
                 onChange={(e) => setShowGridLines(e.target.checked)}
                 className="mr-2 form-checkbox text-indigo-600 bg-gray-700 border-gray-600 rounded"
               />
-              <span className="text-sm">Show 2x2 Grid Lines</span>
+              <span className="text-sm">Show Grid Lines</span>
             </label>
           </div>
           <div>
@@ -88,7 +89,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
                 onChange={(e) => setShowEdges(e.target.checked)}
                 className="mr-2 form-checkbox text-indigo-600 bg-gray-700 border-gray-600 rounded"
               />
-              <span className="text-sm">Show Edge Corner Pieces</span>
+              <span className="text-sm">Show Edges</span>
             </label>
           </div>
         </div>
