@@ -157,7 +157,7 @@ const ComparativeGraphs: React.FC<ComparativeGraphsProps> = ({ onGraphHover, onG
   const create3DPreview = (svgRef: SVGSVGElement) => {
     const width = 175;
     const height = 175;
-    const margin = { top: 20, right: 10, bottom: 10, left: 20 };
+    const margin = { top: 20, right: 10, bottom: 10, left: 10 };
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 

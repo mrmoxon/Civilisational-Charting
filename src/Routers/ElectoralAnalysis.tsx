@@ -103,14 +103,12 @@ import RotationControl from '../CivCompass/RotationControl';
 import RealMachinesLogo from '../CivCompass/RealMachines';
 import DetailedMetrics from '../CivCompass/DetailedMetrics';
 import VotingMarginsChart from '../Electoral/VotingMarginsChart';
-import votingData from '../Electoral/votingData';
+// import votingData from '../Electoral/votingData';
+import { votingData } from '../Electoral/votingData';
+import { VotingData } from '../types';
 
 interface StateData {
   margins: number[];
-//   totalVotes?: number;
-//   demographics?: {
-//     [key: string]: number;
-//   };
 }
 
 const ElectoralAnalysis: React.FC = () => {
@@ -127,17 +125,9 @@ const ElectoralAnalysis: React.FC = () => {
   // Create formatted state data for DetailedMetrics
   const stateData = useMemo(() => {
     const data: Record<string, StateData> = {};
-    Object.entries(votingData).forEach(([state, margins]) => {
+    Object.entries(votingData as VotingData).forEach(([state, margins]) => {
       data[state] = {
-        margins,
-        // You can add more data here as needed
-        // totalVotes: Math.floor(Math.random() * 5000000) + 1000000, // Example data
-        // demographics: {
-        //   'White': Math.floor(Math.random() * 40) + 40,
-        //   'Hispanic': Math.floor(Math.random() * 20) + 10,
-        //   'Black': Math.floor(Math.random() * 15) + 5,
-        //   'Asian': Math.floor(Math.random() * 10) + 2,
-        // }
+        margins: margins as number[],
       };
     });
     return data;

@@ -1,3 +1,9 @@
+import * as THREE from 'three';
+
+export interface VotingData {
+    [state: string]: number[];
+}
+
 // Define the type for our state data
 export type StateData = {
     [key: string]: number[];
@@ -19,5 +25,5 @@ export interface NodeData {
 export type ColorSchemeType = 'default' | 'pastel' | 'monochrome';
 
 export interface Event3D extends THREE.Event {
-stopPropagation: () => void;
-}
+    stopPropagation: () => void;
+  }  

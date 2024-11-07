@@ -1,6 +1,7 @@
-import { StateData } from './types.ts';
+// import { StateData } from '../types.ts';
+import { VotingData } from '../types.ts';
 
-export const votingData: StateData = {
+export const votingData: VotingData = {
     "Alabama": [-14.91, -25.62, -21.58, -22.19, -27.72, -25.46, -30.60],
     "Alaska": [-30.95, -25.55, -21.53, -13.99, -14.73, -10.06, -15.20],
     "Arizona": [-6.29, -10.47, -8.52, -9.06, -3.50, 0.30, -4.70],
