@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
+import React from 'react';  // Remove useState if not used
 
 export type ColorSchemeType = 'default' | 'pastel' | 'monochrome';
 

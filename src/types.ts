@@ -22,6 +22,14 @@ export interface NodeData {
     [key: string]: any;
   }  
 
+export interface DataPoint {
+    name: string;
+    x: number;
+    y: number;
+    z: number;
+    [key: string]: string | number;
+  }
+  
 export type ColorSchemeType = 'default' | 'pastel' | 'monochrome';
 
 export interface Event3D extends THREE.Event {
