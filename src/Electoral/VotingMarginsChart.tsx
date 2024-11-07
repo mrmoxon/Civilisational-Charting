@@ -339,34 +339,44 @@ const VotingMarginsChart: React.FC<VotingMarginsChartProps> = ({
         <>
             {/* Axis labels */}
             <Billboard position={[size + 1, 0, 0]}>
-                <Text color={colors.axis} fontSize={0.5}></Text>
+                <Text color={colors.axis} fontSize={0.5}>
+                    Time →
+                </Text>
             </Billboard>
             <Billboard position={[0, size + 1, 0]}>
-                <Text color={colors.axis} fontSize={0.5}>Democratic</Text>
+                <Text color={colors.axis} fontSize={0.5}>
+                    Democratic
+                </Text>
             </Billboard>
             <Billboard position={[0, -size - 1, 0]}>
-                <Text color={colors.axis} fontSize={0.5}>Republican</Text>
+                <Text color={colors.axis} fontSize={0.5}>
+                    Republican
+                </Text>
             </Billboard>
-
-            {/* Year labels - Modified position */}
+    
+            {/* Year labels */}
             {years.map((year, i) => {
                 const x = (i / (years.length - 1) - 0.5) * size * 2;
                 return (
-                    <Billboard key={year} position={[x, -size - 0.5, 0]}>  {/* Changed Y position from -size/8 to -size - 0.5 */}
-                        <Text color={colors.axis} fontSize={0.3}>{year}</Text>
+                    <Billboard key={year} position={[x, -size - 0.5, 0]}>
+                        <Text color={colors.axis} fontSize={0.3}>
+                            {year}
+                        </Text>
                     </Billboard>
                 );
             })}
-
+    
             {/* Percentage labels */}
             {gridValues.map((value) => (
                 <Billboard key={`label-${value}`} position={[-size/8, value/100 * size, 0]}>
-                    <Text color={colors.axis} fontSize={0.3}>{value}%</Text>
+                    <Text color={colors.axis} fontSize={0.3}>
+                        {value}%
+                    </Text>
                 </Billboard>
             ))}
         </>
-    ), [colors.axis]);
-
+    ), [colors.axis, years, gridValues, size]);
+    
   useFrame(() => {
     if (groupRef.current && !isDragging && rotationSpeed > 0) {
       groupRef.current.rotation.y += rotationSpeed;

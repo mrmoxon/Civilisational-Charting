@@ -7,3 +7,17 @@ export type StateData = {
 export type StateDataStrict = {
     [key: string]: [number, number, number, number, number, number, number];
 };
+
+export interface NodeData {
+    name: string;
+    x: number;
+    y: number;
+    z: number;
+    [key: string]: any;
+  }  
+
+export type ColorSchemeType = 'default' | 'pastel' | 'monochrome';
+
+export interface Event3D extends THREE.Event {
+stopPropagation: () => void;
+}

@@ -12,6 +12,7 @@ import DetailedMetrics from '../CivCompass/DetailedMetrics';
 import { parseCSV, DataPoint } from '../utils/csvParser';
 import SinglePlaneVis from '../CivCompass/SinglePlaneVis';
 import FlexibleVis from '../CivCompass/FlexibleVis';
+import { ColorSchemeType, NodeData } from '../types';
 
 enum VisualizationType {
   Main3D,
@@ -25,7 +26,7 @@ enum VisualizationType {
 const CivilisationCompass: React.FC = () => {
   const [rotationSpeed, setRotationSpeed] = useState(0.001);
   const [showNodes, setShowNodes] = useState(true);
-  const [colorScheme, setColorScheme] = useState('default');
+  const [colorScheme, setColorScheme] = useState<ColorSchemeType>('default');
   const [backgroundColor, setBackgroundColor] = useState('#1a1a1a');
   const [showGridLines, setShowGridLines] = useState(true);
   const [showEdges, setShowEdges] = useState(true);
